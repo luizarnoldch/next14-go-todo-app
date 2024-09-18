@@ -1,0 +1,16 @@
+# ENV
+
+```sh
+  // .env for dev Environment
+  API_HOST=localhost
+  API_PORT=4000
+
+  PSQL_HOST=localhost
+  PSQL_PORT=5432
+  PSQL_USER=postgres
+  PSQL_PASS=postgres
+  PSQL_SCHEMA=todo_app
+
+  ENV=dev
+
+```
