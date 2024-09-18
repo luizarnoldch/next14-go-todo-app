@@ -4,7 +4,7 @@ import (
 	"main/src/task/domain/model"
 	"main/src/task/domain/repository"
 
-	"github.com/gofiber/fiber/v2/log"
+	fiberlog "github.com/gofiber/fiber/v2/log"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -25,14 +25,14 @@ func (r *TaskPSQLRepository) CreateTask(task *model.Task) error {
 
 	rows, err := r.client.NamedQuery(query, task)
 	if err != nil {
-		log.Infof("Error creating task: %v", err)
+		fiberlog.Infof("Error creating task: %v", err)
 		return err
 	}
 	defer rows.Close()
 
 	if rows.Next() {
 		if err := rows.Scan(&task.ID); err != nil {
-			log.Infof("Error scanning returned ID: %v", err)
+			fiberlog.Infof("Error scanning returned ID: %v", err)
 			return err
 		}
 	}
@@ -44,7 +44,7 @@ func (r *TaskPSQLRepository) GetTaskByID(id int) (*model.Task, error) {
 	var task model.Task
 	err := r.client.Get(&task, "SELECT * FROM tasks WHERE id = $1", id)
 	if err != nil {
-		log.Infof("Error getting task by ID: %v", err)
+		fiberlog.Infof("Error getting task by ID: %v", err)
 		return nil, err
 	}
 	return &task, nil
@@ -54,7 +54,7 @@ func (r *TaskPSQLRepository) GetAllTasks() ([]model.Task, error) {
 	var tasks []model.Task
 	err := r.client.Select(&tasks, "SELECT * FROM tasks")
 	if err != nil {
-		log.Infof("Error getting all tasks: %v", err)
+		fiberlog.Infof("Error getting all tasks: %v", err)
 		return nil, err
 	}
 	return tasks, nil
@@ -67,7 +67,7 @@ func (r *TaskPSQLRepository) UpdateTask(task *model.Task) error {
 		WHERE id = :id
 	`, task)
 	if err != nil {
-		log.Infof("Error updating task: %v", err)
+		fiberlog.Infof("Error updating task: %v", err)
 		return err
 	}
 	return nil
@@ -76,7 +76,7 @@ func (r *TaskPSQLRepository) UpdateTask(task *model.Task) error {
 func (r *TaskPSQLRepository) DeleteTask(id int) error {
 	_, err := r.client.Exec("DELETE FROM tasks WHERE id = $1", id)
 	if err != nil {
-		log.Infof("Error deleting task: %v", err)
+		fiberlog.Infof("Error deleting task: %v", err)
 		return err
 	}
 	return nil

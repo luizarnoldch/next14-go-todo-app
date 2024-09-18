@@ -24,6 +24,10 @@ func (c *TaskController) GetAllTasks(ctx *fiber.Ctx) error {
 		})
 	}
 
+	if tasks == nil {
+		tasks = []model.Task{}
+	}
+
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":  "success",
 		"message": "Tasks retrieved successfully",
